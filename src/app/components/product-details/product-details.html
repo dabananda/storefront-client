@@ -55,9 +55,11 @@
           Add to Cart
         </button>
         <button
-          class="cursor-pointer py-2 rounded-xl font-semibold text-lg border border-gray-200 bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
+          (click)="openDeleteModal()"
+          [disabled]="isDeleting()"
+          class="cursor-pointer px-8 py-4 rounded-xl font-semibold text-lg border border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Save for Later
+          {{ isDeleting() ? 'Deleting...' : 'Delete' }}
         </button>
       </div>
     </div>
@@ -70,5 +72,14 @@
   <div class="text-center py-20 text-gray-500">
     <p>Product not found.</p>
   </div>
+  } @if (showDeleteModal()) {
+  <app-confirmation-modal
+    title="Delete Product"
+    [message]="
+      'Are you sure you want to delete ' + product()?.title + '? This action cannot be undone.'
+    "
+    (confirm)="confirmDelete()"
+    (cancel)="cancelDelete()"
+  />
   }
 </div>

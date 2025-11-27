@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class ProductService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = 'http://localhost:8080/api/products';
-  
+
   defaultProductImage =
     'https://res.cloudinary.com/djz3p8sux/image/upload/v1764239947/defaults/default_kfea56.png';
 
@@ -27,5 +27,9 @@ export class ProductService {
 
   addProduct(product: Partial<Product>) {
     return this.http.post<Product>(this.apiUrl, product);
+  }
+
+  deleteProduct(id: number) {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
