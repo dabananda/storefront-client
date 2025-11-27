@@ -1,0 +1,74 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <button
+    (click)="goBack()"
+    class="border rounded-4xl px-3 py-1 cursor-pointer mb-8 flex items-center text-gray-600 hover:text-indigo-600 transition-colors"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="size-6 me-2"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18"
+      />
+    </svg>
+    Back to Products
+  </button>
+
+  @if (product(); as p) {
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+    <div class="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
+      <img
+        [src]="p.image"
+        [alt]="p.title"
+        class="w-full h-auto object-contain max-h-[500px] mix-blend-multiply"
+      />
+    </div>
+
+    <div class="flex flex-col space-y-6">
+      <div>
+        <span
+          class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-50 text-indigo-700 capitalize mb-4"
+        >
+          {{ p.category }}
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">{{ p.title }}</h1>
+      </div>
+
+      <div class="flex items-center">
+        <p class="text-4xl font-bold text-gray-900">${{ p.price }}</p>
+      </div>
+
+      <div class="prose prose-indigo text-gray-600 leading-relaxed">
+        <p>{{ p.description }}</p>
+      </div>
+
+      <div class="pt-6 grid md:grid-cols-2 gap-4">
+        <button
+          class="cursor-pointer flex-1 bg-indigo-600 text-white py-2 rounded-xl font-semibold text-lg hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200"
+        >
+          Add to Cart
+        </button>
+        <button
+          class="cursor-pointer py-2 rounded-xl font-semibold text-lg border border-gray-200 bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
+        >
+          Save for Later
+        </button>
+      </div>
+    </div>
+  </div>
+  } @else if (isLoading()) {
+  <div class="flex justify-center items-center py-20">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+  </div>
+  } @else {
+  <div class="text-center py-20 text-gray-500">
+    <p>Product not found.</p>
+  </div>
+  }
+</div>
