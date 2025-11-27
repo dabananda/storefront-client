@@ -1,5 +1,4 @@
 <div class="py-8">
-  <!-- Header -->
   <header class="mb-8 text-center">
     <h1 class="text-3xl font-bold text-gray-900 tracking-tight sm:text-4xl">
       Latest Products
@@ -9,7 +8,30 @@
     </p>
   </header>
 
-  <!-- Loading State -->
+  <div class="flex flex-wrap justify-center gap-3 mb-10">
+    <button
+      (click)="setCategory('all')"
+      class="px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 border"
+      [class]="selectedCategory() === 'all' 
+        ? 'bg-indigo-600 text-white border-indigo-600' 
+        : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'"
+    >
+      All
+    </button>
+
+    @for (cat of categories(); track cat) {
+      <button
+        (click)="setCategory(cat)"
+        class="px-4 py-2 rounded-full text-sm font-medium capitalize transition-colors duration-200 border"
+        [class]="selectedCategory() === cat 
+          ? 'bg-indigo-600 text-white border-indigo-600' 
+          : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'"
+      >
+        {{ cat }}
+      </button>
+    }
+  </div>
+
   @if (isLoading()) {
   <div class="flex justify-center items-center py-20" role="status">
     <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -17,7 +39,6 @@
   </div>
   }
 
-  <!-- Error State -->
   @if (errorMessage()) {
   <div class="rounded-md bg-red-50 p-4 mb-8 mx-auto max-w-2xl" role="alert">
     <div class="flex">
@@ -36,14 +57,15 @@
   </div>
   }
 
-  <!-- Product Grid -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 xl:gap-8">
-    @for (product of products(); track product.id) {
-    <app-product-card [product]="product" />
-    } @empty { @if (!isLoading() && !errorMessage()) {
-    <div class="col-span-full text-center py-12">
-      <p class="text-gray-500 text-lg">No products found.</p>
-    </div>
-    } }
+    @for (product of filteredProducts(); track product.id) {
+      <app-product-card [product]="product" />
+    } @empty { 
+      @if (!isLoading() && !errorMessage()) {
+        <div class="col-span-full text-center py-12">
+          <p class="text-gray-500 text-lg">No products found in this category.</p>
+        </div>
+      } 
+    }
   </div>
 </div>
