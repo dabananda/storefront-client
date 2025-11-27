@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Location } from '@angular/common';
 import { ProductService } from '../../services/product';
 import { Product } from '../../models/product';
@@ -7,7 +7,7 @@ import { ConfirmationModal } from '../confirmation-modal/confirmation-modal';
 
 @Component({
   selector: 'app-product-details',
-  imports: [ConfirmationModal],
+  imports: [ConfirmationModal, RouterLink],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css',
 })

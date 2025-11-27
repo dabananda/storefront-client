@@ -32,4 +32,8 @@ export class ProductService {
   deleteProduct(id: number) {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  updateProduct(id: number, product: any) {
+    return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
+  }
 }
