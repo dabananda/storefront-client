@@ -14,18 +14,11 @@ export class ProductService {
   defaultProductImage =
     'https://res.cloudinary.com/djz3p8sux/image/upload/v1764239947/defaults/default_kfea56.png';
 
-  // getProducts(): Observable<Product[]> {
-  //   return this.http.get<Product[]>(this.apiUrl);
-  // }
-
-  getProducts(page: number, size: number, search: string = ''): Observable<PaginatedResponse> {
-    let params = new HttpParams()
-      .set('page', page)
-      .set('size', size);
+  getProducts(page: number, size: number, search: string = '', category: string = ''): Observable<PaginatedResponse> {
+    let params = new HttpParams().set('page', page).set('size', size);
     
-    if (search) {
-      params = params.set('search', search);
-    }
+    if (search) params = params.set('search', search)
+    if (category && category !== 'all') params = params.set('category', category);
 
     return this.http.get<PaginatedResponse>(this.apiUrl, { params });
   }

@@ -15,6 +15,8 @@ export class ProductList implements OnInit {
   private readonly productService = inject(ProductService);
 
   products = signal<Product[]>([]);
+  categories = signal<string[]>([]);
+  selectedCategory = signal<string>('all');
   currentPage = signal<number>(0);
   pageSize = signal<number>(8);
   totalElements = signal<number>(0);
@@ -25,6 +27,14 @@ export class ProductList implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.productService.getCategories().subscribe({
+      next: (data) => this.categories.set(data),
+      error: (err) => console.error('Failed to load categories', err)
+    });
   }
 
   loadData(): void {
@@ -33,7 +43,8 @@ export class ProductList implements OnInit {
     this.productService.getProducts(
       this.currentPage(), 
       this.pageSize(), 
-      this.searchQuery()
+      this.searchQuery(),
+      this.selectedCategory()
     ).subscribe({
       next: (response) => {
         this.products.set(response.content);
@@ -43,13 +54,25 @@ export class ProductList implements OnInit {
       },
       error: (error) => {
         console.error('API Error: ', error);
-        this.errorMessage.set('Failed to load products. Check backend.');
+        this.errorMessage.set('Failed to load products.');
         this.isLoading.set(false);
       },
     });
   }
 
   onSearch() {
+    this.currentPage.set(0);
+    this.loadData();
+  }
+
+  setCategory(category: string) {
+    this.selectedCategory.set(category);
+    this.currentPage.set(0);
+    this.loadData();
+  }
+
+  clearSearch() {
+    this.searchQuery.set('');
     this.currentPage.set(0);
     this.loadData();
   }
