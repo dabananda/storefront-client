@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Product } from '../models/product';
 import { Observable } from 'rxjs';
+import { PaginatedResponse } from '../models/paginated-response';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +14,20 @@ export class ProductService {
   defaultProductImage =
     'https://res.cloudinary.com/djz3p8sux/image/upload/v1764239947/defaults/default_kfea56.png';
 
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl);
+  // getProducts(): Observable<Product[]> {
+  //   return this.http.get<Product[]>(this.apiUrl);
+  // }
+
+  getProducts(page: number, size: number, search: string = ''): Observable<PaginatedResponse> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size);
+    
+    if (search) {
+      params = params.set('search', search);
+    }
+
+    return this.http.get<PaginatedResponse>(this.apiUrl, { params });
   }
 
   getCategories(): Observable<string[]> {
